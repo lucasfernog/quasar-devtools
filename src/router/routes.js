@@ -16,13 +16,17 @@ const routes = [
   },
   {
     path: '/',
-    component: () => import('layouts/DevToolsLayout.vue'),
+    component: () => import('layouts/LandingLayout.vue'),
     children: [
       {
         path: '',
         component: () => import('pages/Index.vue')
       }
     ]
+  },
+  {
+    path: '/popup',
+    component: () => import('pages/Popup.vue')
   }
 ]
 
