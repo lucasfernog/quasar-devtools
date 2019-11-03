@@ -6,6 +6,6 @@
 
 <script>
 export default {
-  // name: 'PageName',
+  name: 'DevToolsPanel'
 }
 </script>

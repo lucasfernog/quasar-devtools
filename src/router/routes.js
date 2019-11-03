@@ -1,20 +1,26 @@
 
 const routes = [
   {
+    path: '/devtools',
+    component: () => import('layouts/DevToolsLayout.vue'),
+    children: [
+      {
+        path: '',
+        component: () => import('pages/DevTools.vue')
+      },
+      {
+        path: 'panel',
+        component: () => import('pages/DevToolsPanel.vue')
+      }
+    ]
+  },
+  {
     path: '/',
-    component: () => import('layouts/MyLayout.vue'),
+    component: () => import('layouts/DevToolsLayout.vue'),
     children: [
       {
         path: '',
         component: () => import('pages/Index.vue')
-      },
-      {
-        path: 'devtools',
-        component: () => import('pages/DevTools.vue')
-      },
-      {
-        path: 'devtools-panel',
-        component: () => import('pages/DevToolsPanel.vue')
       }
     ]
   }

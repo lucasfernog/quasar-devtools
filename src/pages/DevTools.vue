@@ -10,6 +10,6 @@ import detectQuasar from '../utils/detect-quasar'
 detectQuasar()
 
 export default {
-  // name: 'PageName',
+  name: 'DevToolsPage'
 }
 </script>

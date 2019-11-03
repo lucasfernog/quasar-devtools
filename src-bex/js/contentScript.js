@@ -4,26 +4,35 @@
 // forked from https://github.com/vuejs/vue-devtools/blob/dev/packages/shell-chrome/src/detector.js
 
 function detectQuasar (win) {
-  setTimeout(() => {
-    const all = document.querySelectorAll('*')
-    let el
-    for (let i = 0; i < all.length; i++) {
-      if (all[i].__vue__) {
-        el = all[i]
-        break
+  if (win.Quasar) { // UMD
+    win.__QUASAR_DEVTOOLS__ = {
+      Quasar: {
+        version: win.Quasar.version,
+        dark: win.Quasar.Dark
       }
     }
+  } else { // CLI
+    setTimeout(() => {
+      const all = document.querySelectorAll('*')
+      let el
+      for (let i = 0; i < all.length; i++) {
+        if (all[i].__vue__) {
+          el = all[i]
+          break
+        }
+      }
 
-    if (el) {
-      let Vue = Object.getPrototypeOf(el.__vue__).constructor
-      while (Vue.super) {
-        Vue = Vue.super
+      if (el) {
+        let Vue = Object.getPrototypeOf(el.__vue__).constructor
+        while (Vue.super) {
+          Vue = Vue.super
+        }
+        if (Vue.prototype.$q /* && Vue.config.devtools */) {
+          win.__QUASAR_DEVTOOLS__ = { Quasar: Vue.prototype.$q }
+        }
       }
-      if (Vue.prototype.$q /* && Vue.config.devtools */) {
-        win.__QUASAR_DEVTOOLS__ = { Quasar: Vue.prototype.$q }
-      }
-    }
-  }, 100)
+    }, 100)
+  }
 }
 
 if (document instanceof HTMLDocument) {
