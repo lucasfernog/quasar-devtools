@@ -8,7 +8,9 @@ function detectQuasar (win) {
     win.__QUASAR_DEVTOOLS__ = {
       Quasar: {
         version: win.Quasar.version,
-        dark: win.Quasar.Dark
+        dark: win.Quasar.Dark,
+        ...win.Quasar,
+        umd: true
       }
     }
   } else { // CLI
