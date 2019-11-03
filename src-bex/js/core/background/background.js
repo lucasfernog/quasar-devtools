@@ -23,8 +23,8 @@ attachGlobalBackgroundHooks(chrome)
  * @param port
  */
 const addConnection = (port) => {
-  const
-    tab = port.sender.tab,
+  console.log(port.name, port)
+  const tab = port.sender,
     connectionId = tab.id + ':' + tab.windowId
 
   let currentConnection = connections[connectionId]
@@ -65,6 +65,7 @@ chrome.runtime.onConnect.addListener(port => {
   for (let connectionId of Object.keys(connections)) {
     const connection = connections[connectionId]
     if (connection.app && connection.contentScript) {
+      console.log('yeah baby')
       mapConnections(connection.app, connection.contentScript)
     }
   }
@@ -73,6 +74,7 @@ chrome.runtime.onConnect.addListener(port => {
 function mapConnections (app, contentScript) {
   // Send message from content script to app
   app.port.onMessage.addListener((message) => {
+    console.log(message, contentScript.connected)
     if (contentScript.connected) {
       contentScript.port.postMessage(message)
     }
@@ -80,6 +82,7 @@ function mapConnections (app, contentScript) {
 
   // Send message from app to content script
   contentScript.port.onMessage.addListener((message) => {
+    console.log(message, app.connected)
     if (app.connected) {
       app.port.postMessage(message)
     }

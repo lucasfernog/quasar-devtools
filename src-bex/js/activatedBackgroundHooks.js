@@ -33,13 +33,12 @@ export default function attachActivatedBackgroundHooks (chrome, bridge) {
       bridge.send(event.eventResponseKey, payload.data)
     })
   })
-
+  bridge.on('init', c => {
+    console.log('init')
+  })
   /*
   // EXAMPLES
   // Listen to a message from the client
-  bridge.on('test', d => {
-    console.log(d)
-  })
 
   // Send a message to the client based on something happening.
   chrome.tabs.onCreated.addListener(tab => {

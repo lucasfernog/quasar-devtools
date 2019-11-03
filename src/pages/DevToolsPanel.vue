@@ -6,6 +6,14 @@
 
 <script>
 export default {
-  // name: 'PageName',
+  name: 'DevToolsPanel',
+
+  created () {
+    this.$q.bex.send('init')
+    this.$q.bex.on('toggle', c => {
+      console.log('on')
+      this.$q.bex.send('toggled', true)
+    })
+  }
 }
 </script>

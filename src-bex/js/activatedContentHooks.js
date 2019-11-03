@@ -2,6 +2,13 @@
 
 export default function attachActivatedContentHooks (window, chrome, bridge) {
   // Hook into the bridge to listen for events sent from the client BEX.
+  document.addEventListener('click', () => {
+    console.log('click')
+    bridge.on('toggled', c => {
+      console.log('toggled')
+    })
+    bridge.send('toggle')
+  })
   /*
   bridge.on('some.event', event => {
     if (event.data.yourProp) {

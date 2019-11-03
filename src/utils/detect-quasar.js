@@ -22,7 +22,7 @@ export default () => {
         clearInterval(checkQuasarInterval)
         created = true
         chrome.devtools.panels.create(
-          'Quasar', 'icons/128.png', 'www/index.html#devtools-panel',
+          'Quasar', 'icons/128.png', 'www/index.html#devtools/panel',
           panel => {
             // panel loaded
           }

@@ -25,6 +25,7 @@ let bridge = new Bridge({
     port.onMessage.addListener(fn)
   },
   send (data) {
+    console.log(disconnected, data)
     if (!disconnected) {
       port.postMessage(data)
     }
