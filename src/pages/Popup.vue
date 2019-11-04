@@ -45,7 +45,11 @@ export default {
       search: ''
     }
   },
+
   mounted () {
+    setTimeout(() => {
+      this.$refs.algolia.focus()
+    }, 100)
     import('docsearch.js').then(docsearch => docsearch.default({
       apiKey: '5c15f3938ef24ae49e3a0e69dc4a140f',
       indexName: 'quasar-framework',
@@ -56,7 +60,6 @@ export default {
       handleSelected: (a, b, suggestion, c, context) => {
         this.search = ''
         window.open(suggestion.url, '_blank')
-        this.$refs.algolia.blur()
       }
     }))
   }

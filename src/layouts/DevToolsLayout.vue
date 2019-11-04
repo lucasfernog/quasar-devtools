@@ -14,6 +14,9 @@
           use-input hide-selected fill-input input-debounce="100" @filter="filterIconSets" />
         <q-btn v-if="globalDarkEnabled" @click="toggleDark" flat round icon="invert_colors" />
       </q-toolbar>
+      <q-tabs align="left">
+        <q-route-tab label="API" to="api" exact />
+      </q-tabs>
     </q-header>
 
     <q-page-container>

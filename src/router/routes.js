@@ -9,8 +9,12 @@ const routes = [
         component: () => import('pages/DevTools.vue')
       },
       {
+        path: 'api',
+        component: () => import('pages/DevToolsApiPanel.vue')
+      },
+      {
         path: 'panel',
-        component: () => import('pages/DevToolsPanel.vue')
+        redirect: 'api'
       }
     ]
   },
