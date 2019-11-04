@@ -19,7 +19,7 @@ const components = require.context('../../node_modules/quasar/dist/api', true, /
   .filter(name => name[0] === 'Q')
 
 export default {
-  name: 'DevToolsApiPanel',
+  name: 'DevToolsApiPage',
 
   components: {
     Api

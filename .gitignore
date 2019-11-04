@@ -22,3 +22,4 @@ yarn-error.log*
 src-bex.crx
 src-bex.pem
 /src-bex/www
+/src-bex/js/core

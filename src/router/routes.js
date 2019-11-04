@@ -10,7 +10,11 @@ const routes = [
       },
       {
         path: 'api',
-        component: () => import('pages/DevToolsApiPanel.vue')
+        component: () => import('pages/DevToolsApiPage.vue')
+      },
+      {
+        path: 'global',
+        component: () => import('pages/DevToolsGlobalPage.vue')
       },
       {
         path: 'panel',
