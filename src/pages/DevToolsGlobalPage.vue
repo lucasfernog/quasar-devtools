@@ -11,6 +11,11 @@
           dense options-dense filled
           use-input hide-selected fill-input input-debounce="100" @filter="filterLangs" />
       </div>
+      <div class="col">
+        <q-select label="Font" :value="font" @input="updateFont" :options="fonts"
+          dense options-dense filled
+          use-input hide-selected fill-input input-debounce="100" @filter="filterFonts" />
+      </div>
     </div>
     <div class="column q-mt-md q-col-gutter-xs">
       <div class="col">
@@ -26,6 +31,7 @@
 <script>
 import iconSet from '../assets/iconSet'
 import langs from '../assets/lang'
+import { fonts, fontsMapping } from '../assets/fonts'
 
 export default {
   name: 'DevToolsGlobalPage',
@@ -40,7 +46,9 @@ export default {
       lang: null,
       langs: langs,
       langInstalled: true,
-      rtl: false
+      rtl: false,
+      font: null,
+      fonts
     }
   },
 
@@ -114,6 +122,21 @@ export default {
     toggleRtl (rtl) {
       this.rtl = rtl
       this.$qeval(`lang.rtl = ${rtl}`)
+    },
+
+    updateFont (font) {
+      this.font = font
+      this.$q.bex.send('font.load-request', {
+        url: `https://pagecdn.io/lib/easyfonts/${font.replace(/ /g, '-').toLowerCase()}.css`,
+        className: fontsMapping[font].className
+      })
+    },
+
+    filterFonts (val, update, abort) {
+      update(() => {
+        const needle = val.toLowerCase()
+        this.fonts = fonts.filter(v => v.toLowerCase().includes(needle))
+      })
     }
   }
 }
