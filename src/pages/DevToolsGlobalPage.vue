@@ -13,8 +13,26 @@
       </div>
       <div class="col">
         <q-select label="Font" :value="font" @input="updateFont" :options="fonts"
-          dense options-dense filled
-          use-input hide-selected fill-input input-debounce="100" @filter="filterFonts" />
+          dense options-dense filled bottom-slots
+          use-input hide-selected fill-input input-debounce="100" @filter="filterFonts">
+          <template #append>
+            <q-btn size="sm" color="accent" v-if="weights.length" :label="weight">
+              <q-menu>
+                <q-list>
+                  <q-item clickable v-for="w in weights" :key="w">
+                    <q-item-section @click="updateWeight(w)">{{ w }}</q-item-section>
+                  </q-item>
+                </q-list>
+              </q-menu>
+            </q-btn>
+          </template>
+          <template #hint>
+            <div v-if="font" class="column">
+              <span>{{ fontLink }}</span>
+              <span>Classes: "{{ font.replace(' ', '-') + (weight ? ' ' + weight : '')}}"</span>
+            </div>
+          </template>
+        </q-select>
       </div>
     </div>
     <div class="column q-mt-md q-col-gutter-xs">
@@ -48,7 +66,20 @@ export default {
       langInstalled: true,
       rtl: false,
       font: null,
-      fonts
+      fonts,
+      weight: null,
+      weights: []
+    }
+  },
+
+  computed: {
+    fontUrl () {
+      return this.font
+        ? `https://pagecdn.io/lib/easyfonts/${this.font.replace(/ /g, '-').toLowerCase()}.css`
+        : ''
+    },
+    fontLink () {
+      return `<link href="${this.fontUrl}" rel="stylesheet" />`
     }
   },
 
@@ -126,8 +157,10 @@ export default {
 
     updateFont (font) {
       this.font = font
+      this.weights = fontsMapping[font].weights
+      this.updateWeight(this.weights.length ? this.weights[0] : null)
       this.$q.bex.send('font.load-request', {
-        url: `https://pagecdn.io/lib/easyfonts/${font.replace(/ /g, '-').toLowerCase()}.css`,
+        url: this.fontUrl,
         className: fontsMapping[font].className
       })
     },
@@ -137,6 +170,11 @@ export default {
         const needle = val.toLowerCase()
         this.fonts = fonts.filter(v => v.toLowerCase().includes(needle))
       })
+    },
+
+    updateWeight (weight) {
+      this.weight = weight
+      this.$q.bex.send('font.weight-change', weight)
     }
   }
 }

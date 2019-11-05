@@ -15,4 +15,16 @@ export default function attachActivatedContentHooks (window, chrome, bridge) {
     })
     document.body.classList.add(event.data.className)
   })
+
+  bridge.on('font.weight-change', event => {
+    const weightClass = event.data
+    document.body.classList.forEach(name => {
+      if (name.match(/w\d+i?/g)) {
+        document.body.classList.remove(name)
+      }
+    })
+    if (weightClass) {
+      document.body.classList.add(event.data)
+    }
+  })
 }
