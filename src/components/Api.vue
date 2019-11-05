@@ -1,5 +1,10 @@
 <template>
-  <q-card class="doc-api q-my-lg" v-if="ready" flat="flat" bordered="bordered">
+  <q-card class="doc-api q-my-lg" flat="flat" bordered="bordered">
+    <q-toolbar class="text-grey-8 bg-white q-pl-none">
+      <card-title :title="name" />
+      <q-space />
+      <div class="col-auto.text-grey">{{ type }}</div>
+    </q-toolbar>
     <q-separator />
       <div class="bg-grey-2 text-grey-7 flex no-wrap">
         <q-tabs class="col" v-model="currentTab" indicator-color="primary" align="left" :breakpoint="0" dense="dense">
@@ -47,6 +52,7 @@
 
 <script>
 import ApiRows from './ApiRows.js'
+import CardTitle from './CardTitle.vue'
 import { format } from 'quasar'
 const { pad } = format
 const groupBy = (list, groupKey, defaultGroupKeyValue) => {
@@ -69,45 +75,26 @@ export default {
   name: 'Api',
 
   components: {
-    ApiRows
-  },
-
-  props: {
-    file: {
-      type: String,
-      required: true
-    }
+    ApiRows,
+    CardTitle
   },
 
   data () {
     return {
-      ready: false,
       currentTab: null,
       currentInnerTab: {
         props: null
       },
       filter: '',
       filteredApi: {},
-      tabCount: {}
+      tabCount: {},
+      tabs: [],
+      name: '',
+      type: ''
     }
   },
 
   watch: {
-    file: {
-      immediate: true,
-      handler (val) {
-        if (val) {
-          import(
-            `quasar/dist/api/${val}.json`
-          ).then(json => {
-            this.parseJson(val, json.default)
-            this.ready = true
-          })
-        } else {
-          this.ready = false
-        }
-      }
-    },
     filter (val) {
       val = val.trim().toLowerCase()
       if (val === '') {
