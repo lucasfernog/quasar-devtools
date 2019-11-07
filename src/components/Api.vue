@@ -1,12 +1,12 @@
 <template>
   <q-card class="doc-api q-my-lg" flat="flat" bordered="bordered">
-    <q-toolbar class="text-grey-8 bg-white q-pl-none">
+    <q-toolbar class="q-pl-none">
       <card-title :title="name" />
       <q-space />
-      <div class="col-auto.text-grey">{{ type }}</div>
+      <div class="col-auto">{{ type }}</div>
     </q-toolbar>
     <q-separator />
-      <div class="bg-grey-2 text-grey-7 flex no-wrap">
+      <div class="flex no-wrap tabs__container">
         <q-tabs class="col" v-model="currentTab" indicator-color="primary" align="left" :breakpoint="0" dense="dense">
           <q-tab v-for="tab in tabs" :key="`api-tab-${tab}`" :name="tab">
             <div class="row no-wrap items-center"><span class="q-mr-xs text-uppercase text-weight-medium">{{ tab }}</span>
@@ -24,7 +24,7 @@
     <q-tab-panels v-model="currentTab" animated>
       <q-tab-panel class="q-pa-none" v-for="tab in tabs" :name="tab" :key="tab">
         <div class="row no-wrap api-container" v-if="aggregationModel[tab]">
-          <div class="col-auto row no-wrap bg-grey-1 text-grey-7 q-py-lg">
+          <div class="col-auto row no-wrap q-py-lg">
             <q-tabs v-model="currentInnerTab[tab]" active-color="primary" indicator-color="primary" :breakpoint="0" vertical dense shrink>
               <q-tab class="inner-tab" v-for="category in apiTabs(tab)" :key="`api-inner-tab-${category}`" :name="category">
                 <div class="row no-wrap items-center self-stretch">
@@ -244,4 +244,18 @@ export default {
       width 100%
   .api-container
     max-height calc(100vh - 220px)
+
+.body--dark .doc-api
+  & .q-toolbar
+    background-color $grey-10
+  & .tabs__container
+    background-color $grey-9
+    color $grey-11
+
+.body--light .doc-api
+  & .q-toolbar
+    color $grey-8
+  & .tabs__container
+    background-color $grey-2
+    color $grey-7
 </style>

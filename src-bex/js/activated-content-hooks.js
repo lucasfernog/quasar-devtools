@@ -27,4 +27,9 @@ export default function attachActivatedContentHooks (window, chrome, bridge) {
       document.body.classList.add(event.data)
     }
   })
+
+  bridge.on('dark.global-change', event => {
+    const dark = event.data
+    bridge.send('dark.content-change', dark)
+  })
 }

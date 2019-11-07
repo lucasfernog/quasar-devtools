@@ -14,11 +14,16 @@ export default {
 </script>
 
 <style lang="sass">
-$title-color: $grey-4
 .doc-card-title
   padding: 2px 10px 2px 10px
-  background: $title-color
-  color: $grey-8
   position: relative
   border-radius: 3px 5px 5px 0
+
+.body--dark .doc-card-title
+  background: $grey-7
+  color: $grey-3
+
+.body--light .doc-card-title
+  background: $grey-4
+  color: $grey-8
 </style>

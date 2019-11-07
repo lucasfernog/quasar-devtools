@@ -35,6 +35,10 @@ const routes = [
   {
     path: '/popup',
     component: () => import('pages/Popup.vue')
+  },
+  {
+    path: '/options',
+    component: () => import('pages/Options.vue')
   }
 ]
 
