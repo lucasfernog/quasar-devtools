@@ -3,7 +3,7 @@
   "description": "A Quasar DevTools extension",
   "version": "1.0.0",
   "manifest_version": 2,
-  "devtools_page": "www/index.html#devtools",
+  "devtools_page": "www/index.html#devtools-detection",
   "options_page": "www/index.html#options",
   "icons": {
     "16": "icons/icon16x16.png",

@@ -1,13 +1,13 @@
 
 const routes = [
   {
+    path: '/devtools-detection',
+    component: () => import('pages/DevTools.vue')
+  },
+  {
     path: '/devtools',
     component: () => import('layouts/DevToolsLayout.vue'),
     children: [
-      {
-        path: '',
-        component: () => import('pages/DevTools.vue')
-      },
       {
         path: 'api',
         component: () => import('pages/DevToolsApiPage.vue')
@@ -18,7 +18,7 @@ const routes = [
       },
       {
         path: 'panel',
-        redirect: 'api'
+        component: () => import('pages/DevToolsPanelLoad.vue')
       }
     ]
   },

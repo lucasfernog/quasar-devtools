@@ -1,6 +1,7 @@
 // Hooks added here have a bridge allowing communication between the BEX Content Script and the Quasar Application.
 
 export default function attachActivatedContentHooks (bridge) {
+  let quasarInstance = null
   // Hook into the bridge to listen for events sent from the client BEX.
   bridge.on('font.load-request', event => {
     const link = document.createElement('link')
@@ -31,5 +32,14 @@ export default function attachActivatedContentHooks (bridge) {
   bridge.on('dark.global-change', event => {
     const dark = event.data
     bridge.send('dark.content-change', dark)
+  })
+
+  bridge.on('quasar.detect', event => {
+    quasarInstance = event.data
+    bridge.send('quasar.detect', quasarInstance)
+  })
+
+  bridge.on('devtools.init', () => {
+    bridge.send('devtools.instance', quasarInstance)
   })
 }

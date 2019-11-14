@@ -1,15 +1,21 @@
 <template>
-  <q-page padding>
-    <!-- content -->
-  </q-page>
+<div></div>
 </template>
 
 <script>
 
-import detectQuasar from '../utils/detect-quasar'
-detectQuasar()
-
 export default {
-  name: 'DevToolsPage'
+  name: 'DevToolsPage',
+
+  created () {
+    window.QBexBridge.on('quasar.detect', event => {
+      chrome.devtools.panels.create(
+        'Quasar', 'icons/128.png', 'www/index.html#devtools/panel',
+        panel => {
+          // panel loaded
+        }
+      )
+    })
+  }
 }
 </script>

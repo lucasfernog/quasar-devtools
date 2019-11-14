@@ -56,15 +56,12 @@ export default {
 
   data () {
     return {
-      globalDarkEnabled: false,
-      dark: false,
-      iconSet: null,
+      dark: !!this.$store.state.$q.dark.isActive,
+      iconSet: this.$store.state.$q.iconSet.name,
       iconSets: iconSet,
-      iconSetInstalled: true,
       lang: null,
       langs: langs,
-      langInstalled: true,
-      rtl: false,
+      rtl: this.$store.state.$q.lang.rtl,
       font: null,
       fonts,
       weight: null,
@@ -73,6 +70,15 @@ export default {
   },
 
   computed: {
+    globalDarkEnabled () {
+      return this.$qq.dark.isActive !== void 0
+    },
+    iconSetInstalled () {
+      return !this.$qq.umd || this.$qq.iconSet.__installed
+    },
+    langInstalled () {
+      return !this.$qq.umd || this.langs.length > 0
+    },
     fontUrl () {
       return this.font
         ? `https://pagecdn.io/lib/easyfonts/${this.font.replace(/ /g, '-').toLowerCase()}.css`
@@ -84,38 +90,12 @@ export default {
   },
 
   created () {
-    this.$qeval('iconSet.name')
-      .then(iconSet => {
-        this.iconSet = iconSet
-      })
-
-    this.$qeval('lang.rtl')
-      .then(rtl => {
-        this.rtl = rtl
-      })
-
-    this.$qeval('umd')
-      .then(umd => {
-        if (umd) {
-          this.$qeval('Object.keys($quasar.lang)')
-            .then(installedLangs => {
-              this.langs = langs = installedLangs
-            })
-          this.$qeval('iconSet.__installed')
-            .then(installed => {
-              this.iconSetInstalled = installed
-            })
-        }
-      })
-
-    this.$qeval('dark.isActive')
-      .then(dark => {
-        this.dark = !!dark
-        this.globalDarkEnabled = true
-      })
-      .catch(() => {
-        this.globalDarkEnabled = false
-      })
+    if (this.$qq.umd) {
+      this.$qeval('Object.keys($quasar.lang)')
+        .then(installedLangs => {
+          this.langs = langs = installedLangs
+        })
+    }
   },
 
   methods: {
