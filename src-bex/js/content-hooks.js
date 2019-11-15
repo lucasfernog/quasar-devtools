@@ -36,10 +36,9 @@ export default function attachActivatedContentHooks (bridge) {
 
   bridge.on('quasar.detect', event => {
     quasarInstance = event.data
-    bridge.send('quasar.detect', quasarInstance)
   })
 
-  bridge.on('devtools.init', () => {
-    bridge.send('devtools.instance', quasarInstance)
+  bridge.on('devtools.init', event => {
+    quasarInstance && bridge.send(event.eventResponseKey, quasarInstance)
   })
 }

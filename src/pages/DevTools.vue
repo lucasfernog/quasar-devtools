@@ -4,17 +4,28 @@
 
 <script>
 
+function waitBridge (cb) {
+  if (!window.QBexBridge) {
+    setTimeout(waitBridge, 50)
+  } else {
+    cb()
+  }
+}
+
 export default {
   name: 'DevToolsPage',
 
   created () {
-    window.QBexBridge.on('quasar.detect', event => {
-      chrome.devtools.panels.create(
-        'Quasar', 'icons/128.png', 'www/index.html#devtools/panel',
-        panel => {
-          // panel loaded
-        }
-      )
+    waitBridge(() => {
+      window.QBexBridge.send('devtools.init')
+        .then(() => {
+          chrome.devtools.panels.create(
+            'Quasar', 'icons/128.png', 'www/index.html#devtools/panel',
+            panel => {
+              // panel loaded
+            }
+          )
+        })
     })
   }
 }
