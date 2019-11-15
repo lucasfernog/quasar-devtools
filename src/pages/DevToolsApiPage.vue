@@ -4,7 +4,7 @@
       dense options-dense filled
       use-input hide-selected fill-input input-debounce="100" @filter="filterFiles" />
     <div class="full-width q-mt-lg">
-      <api :class="{ hidden: !selectedFile }" ref="api" :version="version" />
+      <api :class="{ hidden: !selectedFile }" ref="api" :version="$qq.version" />
       <div v-if="error">{{ error }}</div>
     </div>
   </q-page>
@@ -26,34 +26,30 @@ export default {
       files: [],
       filteredFiles: [],
       selectedFile: null,
-      version: null,
       error: null
     }
   },
 
   created () {
-    this.$qeval('version')
-      .then(version => {
-        this.version = version
-        fetch(`https://data.jsdelivr.com/v1/package/npm/quasar@${version}`)
-          .then(response => response.json())
-          .then(response => {
-            const dirLookup = (dirStructure, desiredDir) => {
-              for (const file of dirStructure.files) {
-                if (file.type === 'directory' && file.name === desiredDir) {
-                  return file
-                }
-              }
-              throw new Error(`Dir ${desiredDir} not found`)
+    console.log(Object.assign({}, this.$qq))
+    fetch(`https://data.jsdelivr.com/v1/package/npm/quasar@${this.$qq.version}`)
+      .then(response => response.json())
+      .then(response => {
+        const dirLookup = (dirStructure, desiredDir) => {
+          for (const file of dirStructure.files) {
+            if (file.type === 'directory' && file.name === desiredDir) {
+              return file
             }
-            const dist = dirLookup(response, 'dist')
-            const api = dirLookup(dist, 'api')
-            for (const file of api.files) {
-              if (file.name.endsWith('.json')) {
-                this.files.push(file.name.replace('.json', ''))
-              }
-            }
-          })
+          }
+          throw new Error(`Dir ${desiredDir} not found`)
+        }
+        const dist = dirLookup(response, 'dist')
+        const api = dirLookup(dist, 'api')
+        for (const file of api.files) {
+          if (file.name.endsWith('.json')) {
+            this.files.push(file.name.replace('.json', ''))
+          }
+        }
       })
   },
 
@@ -68,13 +64,14 @@ export default {
     updateFile (file) {
       this.selectedFile = file
       this.error = null
-      fetch(`https://cdn.jsdelivr.net/npm/quasar@${this.version}/dist/api/${file}.json`)
+      const version = this.$qq.version
+      fetch(`https://cdn.jsdelivr.net/npm/quasar@${version}/dist/api/${file}.json`)
         .then(response => response.json())
         .then(json => {
           this.$refs.api.parseJson(file, json)
         })
         .catch(() => {
-          this.error = `Failed to load ${file} API definition for Quasar version ${this.version}`
+          this.error = `Failed to load ${file} API definition for Quasar version ${version}`
         })
     }
   }
